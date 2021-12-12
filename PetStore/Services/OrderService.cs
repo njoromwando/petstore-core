@@ -63,7 +63,6 @@ namespace PetStore.Services
                 var msg = new StringBuilder();
                 msg.Append("<h2>PetStore Order Confirmation</h2>");
                 msg.Append(@"<table border=""1"" ><tr> <th> Pet </th><th> Description </th><th> Price </th> </tr>");
-
                 foreach (var item in vm)
                 {
                     msg.Append($"<tr>");
@@ -73,7 +72,6 @@ namespace PetStore.Services
                     msg.Append($"</tr>");
                 }
                 msg.Append($"</table>");
-
                 msg.Append("<p>Thank you for shopping with us.</p>");
                  _mailService.GMailSMTP(customermail, Convert.ToString(msg), order);
             }
