@@ -379,3 +379,8 @@ D:\Projects\Others\PetStore\JamesPetStore\PetStore\obj\Debug\net5.0\ref\PetStore
 D:\Projects\Others\PetStore\JamesPetStore\PetStore\obj\Debug\net5.0\PetStore.pdb
 D:\Projects\Others\PetStore\JamesPetStore\PetStore\obj\Debug\net5.0\PetStore.genruntimeconfig.cache
 D:\Projects\Others\PetStore\JamesPetStore\PetStore\obj\Debug\net5.0\PetStore.csproj.AssemblyReference.cache
+D:\Projects\Others\PetStore\JamesPetStore\PetStore\bin\Debug\net5.0\SendGrid.dll
+D:\Projects\Others\PetStore\JamesPetStore\PetStore\bin\Debug\net5.0\StarkbankEcdsa.dll
+D:\Projects\Others\PetStore\JamesPetStore\PetStore\bin\Debug\net5.0\MailKit.dll
+D:\Projects\Others\PetStore\JamesPetStore\PetStore\bin\Debug\net5.0\MimeKit.dll
+D:\Projects\Others\PetStore\JamesPetStore\PetStore\bin\Debug\net5.0\BouncyCastle.Crypto.dll
