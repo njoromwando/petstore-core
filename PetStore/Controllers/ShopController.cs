@@ -23,16 +23,18 @@ namespace PetStore.Controllers
         private readonly IPetStoreRepository _repository;
         private readonly ILogger<ShopController> _logger;
         private readonly IMapper _mapper;
+        private readonly IOrderService _orderService;
         private readonly UserManager<StoreUser> _userManager;
 
         public ShopController(IPetStoreRepository repository, ILogger<ShopController> logger,
-               IMapper mapper,
-                UserManager<StoreUser> userManager)
+               IMapper mapper, IOrderService orderService
+               )
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-            _userManager = userManager;
+            _orderService = orderService;
+            // _userManager = userManager;
         }
 
         [HttpGet]
@@ -40,12 +42,13 @@ namespace PetStore.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Product>>>  GetProducts()
         {
             try
             {
-                var user = User.Identity.Name;
+                var njoro = User.Identity.Name;
+               // var user = HttpContext.User.Claims;
                 return Ok(await _repository.GetAllProducts());
             }
             catch (Exception ex)
@@ -63,13 +66,19 @@ namespace PetStore.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var newOrder = _mapper.Map<Order>(model);
-                    var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
-                    newOrder.User = currentUser;
-                    _repository.AddEntity(newOrder);
-                    if (_repository.SaveAll())
+                    var response = await _orderService.CreateOrderAsync(model, User.Identity.Name);
+
+                    //var newOrder = _mapper.Map<Order>(model);
+                    //var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                    //newOrder.User = currentUser;
+                    //_repository.AddEntity(newOrder);
+                    if (response!=null)
                     {
-                        return Created($"/api/orders/{newOrder.Id}", _mapper.Map<OrderViewModel>(newOrder));
+                        return Created($"/api/orders/{response.OrderId}", response);
+                    }
+                    else
+                    {
+                        return BadRequest("Failed to save new order");
                     }
                 }
                 else

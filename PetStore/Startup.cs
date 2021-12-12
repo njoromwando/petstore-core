@@ -83,8 +83,11 @@ namespace PetStore
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<IPetStoreAuthenticationService, PetStoreAuthenticationService>();
+            services.AddScoped<IPetStoreAuthenticationService,PetStoreAuthenticationService>();
             services.AddScoped<IPetStoreRepository, PetStoreRepository>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IOrderService, OrderService>();
+
 
             services.AddControllers()
                 .AddNewtonsoftJson(cfg => cfg.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
