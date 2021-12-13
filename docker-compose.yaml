@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  petstore:
+    container_name: petstorecore
+    image: petstorecore:1.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Europe/Moscow
+      - 'ConnectionStrings:DefaultConnection=Server=sla-dev-200;Database=FireStore;User=sa;Password=1StrongPwd!!'
+      - CORS=http://localhost:8080
+    restart: always
+    ports:
+      - "8810:80"
+    depends_on:
+      - db
+    volumes:
+      - "/home/datadrive/firestone/logs/callbacklogs:/app/logs"
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest 
+    container_name: db
+    environment:
+      - 'MSSQL_SA_PASSWORD=1StrongPwd!!'
+      - 'ACCEPT_EULA=Y'
+      - TZ=Europe/Moscow
+    ports:
+      - "1433:1433"
+    volumes:
+      - C://Database://var//opt//mssql//data

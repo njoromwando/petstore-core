@@ -42,7 +42,7 @@ namespace PetStore.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Product>>>  GetProducts()
         {
             try
