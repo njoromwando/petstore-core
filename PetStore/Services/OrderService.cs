@@ -43,7 +43,7 @@ namespace PetStore.Services
                 _repository.SaveAll();
                 // send email
 
-                 SendOrderEmail(currentUser.Email, model.Items,$"PetStore Order Confirmation {model.OrderNumber}");
+                await SendOrderEmail(currentUser.Email, model.Items,$"PetStore Order Confirmation {model.OrderNumber}");
 
                 return _mapper.Map<OrderViewModel>(newOrder);
             }
@@ -73,7 +73,8 @@ namespace PetStore.Services
                 }
                 msg.Append($"</table>");
                 msg.Append("<p>Thank you for shopping with us.</p>");
-                 _mailService.GMailSMTP(customermail, Convert.ToString(msg), order);
+
+                await  _mailService.GMailSMTP(customermail, Convert.ToString(msg), order);
             }
             catch (Exception)
             {

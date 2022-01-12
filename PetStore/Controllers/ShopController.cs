@@ -1,17 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetStore.Data.Entities;
-using PetStore.Interface;
 using PetStore.Data.ViewModels;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using PetStore.Interface;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PetStore.Controllers
 {
@@ -47,8 +45,6 @@ namespace PetStore.Controllers
         {
             try
             {
-                var njoro = User.Identity.Name;
-               // var user = HttpContext.User.Claims;
                 return Ok(await _repository.GetAllProducts());
             }
             catch (Exception ex)
@@ -67,11 +63,6 @@ namespace PetStore.Controllers
                 if (ModelState.IsValid)
                 {
                     var response = await _orderService.CreateOrderAsync(model, User.Identity.Name);
-
-                    //var newOrder = _mapper.Map<Order>(model);
-                    //var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
-                    //newOrder.User = currentUser;
-                    //_repository.AddEntity(newOrder);
                     if (response!=null)
                     {
                         return Created($"/api/orders/{response.OrderId}", response);
