@@ -32,7 +32,6 @@ namespace PetStore.Controllers
             _logger = logger;
             _mapper = mapper;
             _orderService = orderService;
-            // _userManager = userManager;
         }
 
         [HttpGet]

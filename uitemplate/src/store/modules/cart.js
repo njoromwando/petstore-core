@@ -1,23 +1,24 @@
 //import { products } from '../../data/products'
-import axios from "axios";
+import axios from 'axios';
+import { isConsole } from 'mobile-device-detect';
 const state = {
   items: [],
-  addToCart: "",
+  addToCart: '',
   addedToCart: [],
-  removeToCart: "",
+  removeToCart: '',
   totalCart: 0,
-  ascOrder: "",
+  ascOrder: '',
   filterProducts: [],
-  brandFilter: "",
-  filterData: "",
-  orderBy: "",
+  brandFilter: '',
+  filterData: '',
+  orderBy: '',
   perPage: 12,
   currentPage: 1,
   pagesToShow: 3,
-  brands: ["apple", "huawei", "sony", "samsung", "xiaomi", "asus"],
-  categories: ["Mobile", "Speaker", "Furniture", "Watch"],
+  brands: ['apple', 'huawei', 'sony', 'samsung', 'xiaomi', 'asus'],
+  categories: ['Mobile', 'Speaker', 'Furniture', 'Watch'],
   checkoutForm: [],
-  checkoutFormAdded: "",
+  checkoutFormAdded: '',
 };
 
 const getters = {
@@ -42,43 +43,43 @@ const getters = {
 
 const actions = {
   addCart({ commit }, data) {
-    commit("ADD_CART", data);
+    commit('ADD_CART', data);
   },
   addBrandToFilter({ commit }, data) {
-    commit("ADD_BRAND_TO_FILTER", data);
+    commit('ADD_BRAND_TO_FILTER', data);
   },
   addCategoryItem({ commit }, data) {
-    commit("ADD_BRAND_TO_CATEGORY", data);
+    commit('ADD_BRAND_TO_CATEGORY', data);
   },
   removeBrandToFilter({ commit }, data) {
-    commit("REMOVE_BRAND_FROM_FILTER", data);
+    commit('REMOVE_BRAND_FROM_FILTER', data);
   },
   ascendingOrderCart({ commit }, data) {
-    commit("ASCENDING_ORDER_CART", data);
+    commit('ASCENDING_ORDER_CART', data);
   },
   descendingOrderCart({ commit }, data) {
-    commit("DESCENDING_ORDER_CART", data);
+    commit('DESCENDING_ORDER_CART', data);
   },
   totalCart({ commit }, data) {
-    commit("TOTAL_CART", data);
+    commit('TOTAL_CART', data);
   },
   removeCart({ commit }, data) {
-    commit("REMOVE_CART_LIST", data);
+    commit('REMOVE_CART_LIST', data);
   },
   addCheckoutAddress({ commit }, data) {
-    commit("ADD_CHECKOUT_FORM", data);
+    commit('ADD_CHECKOUT_FORM', data);
   },
   removeQty({ commit }, data) {
-    commit("REMOVE_QTY", data);
+    commit('REMOVE_QTY', data);
   },
   addQty({ commit }, data) {
-    commit("ADD_QTY", data);
+    commit('ADD_QTY', data);
   },
   fetchProductsFromApi({ commit }) {
-    axios.get("https://localhost:5001/api/Shop/getproducts").then((pets) => {
+    axios.get('https://localhost:5001/api/Shop/getproducts').then((pets) => {
       // console.log('my data is ' , pets.data)
       let data = pets.data;
-      commit("GET_PRODUCTS", data);
+      commit('GET_PRODUCTS', data);
     });
   },
 };
@@ -103,11 +104,11 @@ const mutations = {
     if (findId) {
       // console.log(findId)
       state.totalCart += data.price;
-      data["qty"] += 1;
+      data['qty'] += 1;
       // console.log(data);
     } else {
       state.totalCart += data.price;
-      data["qty"] = 1;
+      data['qty'] = 1;
       state.addedToCart.push(data);
     }
   },
@@ -124,7 +125,7 @@ const mutations = {
         state.totalCart -= data.price;
         let index = state.addedToCart.indexOf(data);
         state.addedToCart.splice(index, 1);
-        console.log("not working");
+        console.log('not working');
       }
     }
   },
@@ -135,7 +136,7 @@ const mutations = {
         state.totalCart += data.price;
         data.qty += 1;
       } else {
-        console.log("not working");
+        console.log('not working');
       }
     }
   },

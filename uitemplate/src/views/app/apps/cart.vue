@@ -18,7 +18,7 @@
                   <div class="cart-image">
                     <img
                       :src="product.imageUrl"
-                      style="width:220px; height:120px"
+                      style="width: 220px; height: 120px"
                       alt
                     />
                   </div>
@@ -106,65 +106,107 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
+import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
 
 export default {
   computed: {
-    ...mapGetters(["getAddToCarts", "getTotalCart", "getAddToCarts"]),
+    ...mapGetters(['getAddToCarts', 'getTotalCart', 'getAddToCarts']),
   },
   data() {
     return {
       isCounter: 1,
       minItem: 1,
+      selectedItems: {},
       orderDetails: {
-        orderDate: "2021-12-12T19:40:20.035Z",
-        orderNumber: this.generateRandomOrderNumber(),
-        items: [getAddToCarts],
+        orderDate: '',
+        orderNumber: '',
+        items: [
+          {
+            quantity: 0,
+            unitPrice: 0,
+            productId: '',
+            productCategory: '',
+            productTitle: '',
+            productDescription: '',
+          },
+        ],
       },
     };
   },
   methods: {
-    ...mapActions(["totalCart", "removeCart", "removeQty", "addQty"]),
+    ...mapActions(['totalCart', 'removeCart', 'removeQty', 'addQty']),
     generateRandomOrderNumber(min, max) {
-      min = 1000;
-      max = 9999;
+      min = 100;
+      max = 100000;
       return Math.floor(Math.random() * (max - min + 1) + min);
+      // Math.ceil(Math.random()*1000000)
+    },
+    currentTime: function () {
+      var currentDate = new Date();
+      console.log('my date', currentDate);
+
+      var formatted_date = new Date().toJSON();
+      console.log('formatted date', formatted_date);
     },
 
     removeCartPage(product, key) {
       this.$swal({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
       }).then((result) => {
         if (result.value) {
           this.removeCart(product);
-          this.$swal("Deleted!", "Your Item has bee Deleted.", "success");
+          this.$swal('Deleted!', 'Your Item has bee Deleted.', 'success');
         }
       });
     },
     redirectProduct() {
-      this.$router.push("/app/apps/products");
+      this.$router.push('/app/apps/products');
     },
     orderAddress() {
-      this.$router.push("checkout-address");
+      this.$router.push('checkout-address');
     },
     sendEmail() {
-      console.log("this orderDetails", this.getAddToCarts);
-      var james = JSON.parse(localStorage.getItem("userInfo")).uid;
+      console.log('sending data', this.orderDetails);
+
+      // this.orderDetails.orderId = this.generateRandomOrderNumber()
+      this.orderDetails.orderDate = new Date().toJSON();
+      this.orderDetails.orderNumber = Math.round(+new Date() / 1000).toString();
+      // this.restructureCartItems()
+      // alert("am here")
+      console.log('this orderDetails', this.orderDetails);
       axios
-        .post("https://localhost:5001/api/Shop/postorder", this.orderDetails, {
-          headers: { Authorization: `Bearer ${james}` },
-        })
+        .post('https://localhost:5001/api/Shop/postorder', this.orderDetails)
         .then((result) => {
-          console.log("see if oredr is posted", result.data);
+          console.log('see if order is posted', result.data);
         });
     },
+    restructureCartItems() {
+      const newData = this.getAddToCarts.map((a) => {
+        return {
+          quantity: a.qty,
+          unitPrice: a.price,
+          productId: a.id,
+          productCategory: a.category,
+          productTitle: a.title,
+          productDescription: a.description,
+        };
+      });
+      console.log('restructured data', newData);
+      this.orderDetails.items = newData;
+    },
+  },
+
+  created() {
+    this.currentTime();
+    this.restructureCartItems();
+    console.log('selected items', this.orderDetails.items);
   },
 };
 </script>
