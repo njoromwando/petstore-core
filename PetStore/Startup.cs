@@ -17,6 +17,7 @@ using PetStore.Helpers;
 using PetStore.Interface;
 using PetStore.Repository;
 using PetStore.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace PetStore
 {
@@ -69,6 +70,14 @@ namespace PetStore
             services.AddDbContext<PetStoreContext>(options =>
             {
                 options.UseSqlServer(ConnectionString, opt => opt.EnableRetryOnFailure(6));
+            });
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IUriService>(o =>
+            {
+                var accessor = o.GetRequiredService<IHttpContextAccessor>();
+                var request = accessor.HttpContext.Request;
+                var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                return new UriService(uri);
             });
 
             services.AddTransient<DbInitializer>();

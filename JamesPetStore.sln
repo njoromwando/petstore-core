@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetStore", "PetStore\PetStore.csproj", "{2DB3BB46-F089-4594-BB94-19C78A1FDF13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petstore.Test", "Petstore.Test\Petstore.Test.csproj", "{F315044D-B059-4105-BD65-AAF73287781A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Petstore.Test", "Petstore.Test\Petstore.Test.csproj", "{F315044D-B059-4105-BD65-AAF73287781A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

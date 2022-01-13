@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetStore.Data.Entities;
 using PetStore.Data.ViewModels;
+using PetStore.Helpers;
 using PetStore.Interface;
 using System;
 using System.Collections.Generic;
@@ -91,6 +92,27 @@ namespace PetStore.Controllers
             var order = _repository.GetOrderById(User.Identity.Name, orderId);
             if (order != null) return Ok(_mapper.Map<IEnumerable<OrderItemViewModel>>(order.Items));
             return NotFound();
+        }
+
+        [HttpGet]
+        [Route("getallproducts")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [AllowAnonymous]
+        public async Task<ActionResult<object>> GetPaginatedProducts([FromQuery] PaginationFilter filter)
+        {
+            try
+            {
+                var route = Request.Path.Value;
+
+                return Ok(await _repository.GetAllProductsPaginated(filter,route));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get products: {ex}");
+                return BadRequest("failed to get products");
+            }
         }
 
     }

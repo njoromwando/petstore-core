@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using PetStore.Data;
 using PetStore.Data.Entities;
+using PetStore.Helpers;
 using PetStore.Interface;
 
 namespace PetStore.Repository
@@ -15,11 +16,13 @@ namespace PetStore.Repository
     {
         private readonly PetStoreContext _context;
         private readonly ILogger<PetStoreRepository> _logger;
+        private readonly IUriService uriService;
 
-        public PetStoreRepository(PetStoreContext context, ILogger<PetStoreRepository> logger)
+        public PetStoreRepository(PetStoreContext context, ILogger<PetStoreRepository> logger, IUriService uriService)
         {
             _context = context;
             _logger = logger;
+            this.uriService = uriService;
         }
         public void AddEntity(object entity)
         {
@@ -51,6 +54,29 @@ namespace PetStore.Repository
                 return await _context.Products
                     .OrderBy(p => p.Title)
                     .ToListAsync();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get all products: {ex}");
+                return null;
+            }
+        }
+
+        public async Task<object> GetAllProductsPaginated(PaginationFilter filter,string route)
+        {
+            try
+            {
+                var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+                var pagedData = await _context.Products
+                    .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                    .Take(validFilter.PageSize)
+                    .ToListAsync();
+                var totalRecords = await _context.Products.CountAsync();
+                var pagedReponse = PaginationHelper.CreatePagedReponse<Product>(pagedData, validFilter, totalRecords, uriService, route);
+                _logger.LogInformation("GetAllProducts paginated");
+
+                return pagedReponse;
 
             }
             catch (Exception ex)

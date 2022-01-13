@@ -116,7 +116,9 @@ export default {
   data() {
     return {
       isCounter: 1,
+      token: '',
       minItem: 1,
+      clearItems: {},
       selectedItems: {},
       orderDetails: {
         orderDate: '',
@@ -135,7 +137,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['totalCart', 'removeCart', 'removeQty', 'addQty']),
+    ...mapActions([
+      'totalCart',
+      'removeCart',
+      'removeQty',
+      'addQty',
+      'clearCart',
+    ]),
     generateRandomOrderNumber(min, max) {
       min = 100;
       max = 100000;
@@ -182,10 +190,41 @@ export default {
       // alert("am here")
       console.log('this orderDetails', this.orderDetails);
       axios
-        .post('https://localhost:5001/api/Shop/postorder', this.orderDetails)
+        .post('https://localhost:5001/api/Shop/postorder', this.orderDetails, {
+          headers: {
+            Authorization: this.token,
+          },
+        })
         .then((result) => {
-          console.log('see if order is posted', result.data);
+          console.log('see if oredr is posted', result.data);
+          this.getAddToCarts.splice(0);
+          console.log('cleared cart items', this.getAddToCarts);
+
+          this.$bvToast.toast(
+            `Your order has been processed successfully. Thank you fro shopping with us. Redirecting ..`,
+            {
+              title: 'Order Successful!',
+              variant: 'success',
+              solid: true,
+              autoHideDelay: 2000,
+            }
+          );
         });
+      setTimeout(() => {
+        this.$router.push('/app/apps/products');
+      }, 5000);
+
+      // this.makeToast(
+      //     "success",
+      //     "You have authorised disbuserment of 7 records listed. You may go ahead and disburse. "
+      // );
+    },
+    makeToast(variant = null, msg) {
+      this.$bvToast.toast(msg, {
+        title: ` ${variant || 'default'}`,
+        variant: variant,
+        solid: true,
+      });
     },
     restructureCartItems() {
       const newData = this.getAddToCarts.map((a) => {
@@ -206,10 +245,11 @@ export default {
   created() {
     this.currentTime();
     this.restructureCartItems();
+    this.token = this.token =
+      'Bearer ' + JSON.parse(localStorage.getItem('userInfo')).uid;
     console.log('selected items', this.orderDetails.items);
+    console.log('cart items', this.getAddToCarts);
   },
 };
 </script>
-<style>
-/* On screens that are 992px or less, set the background color to blue */
-</style>
+<style></style>

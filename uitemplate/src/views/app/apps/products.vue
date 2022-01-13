@@ -153,13 +153,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import StarRating from "vue-star-rating";
+import { mapGetters, mapActions } from 'vuex';
+import StarRating from 'vue-star-rating';
 
 export default {
   metaInfo: {
     // if no subcomponents specify a metaInfo.title, this title will be used
-    title: "Product List",
+    title: 'Product List',
   },
   components: {
     StarRating,
@@ -167,16 +167,16 @@ export default {
   data() {
     return {
       rating: 4,
-      search: "",
+      search: '',
       isProduct: true,
-      filterBrand: "",
+      filterBrand: '',
       priceValue: 500,
-      selectedFilter: "",
-      selectPriceRange: "",
+      selectedFilter: '',
+      selectPriceRange: '',
       priceRange: 1,
       value: 1,
-      items: "",
-      paginatedItems: "",
+      items: '',
+      paginatedItems: '',
       currentPage: 1,
       perPage: 9,
       // totalRows: '',
@@ -193,9 +193,9 @@ export default {
       // ],
       featured: null,
       featuredOptions: [
-        { value: null, text: "Featured" },
-        { value: "a", text: "Highest Price" },
-        { value: "b", text: "Lowest Price" },
+        { value: null, text: 'Featured' },
+        { value: 'a', text: 'Highest Price' },
+        { value: 'b', text: 'Lowest Price' },
       ],
       // brandsCount: this.$store.getters.brandsCount,
       // brands: this.$store.state.brands
@@ -203,12 +203,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "getItems",
-      "brandsCount",
-      "getBrandsItem",
-      "getFilterProducts",
-      "getCategoryItem",
-      "getAddToCarts",
+      'getItems',
+      'brandsCount',
+      'getBrandsItem',
+      'getFilterProducts',
+      'getCategoryItem',
+      'getAddToCarts',
     ]),
     totalRows() {
       return this.getFilterProducts.length;
@@ -229,30 +229,30 @@ export default {
       );
     },
   },
-  created: function() {
+  created: function () {
     this.items = this.getItems;
-    console.log("yaaay", this.items);
+    console.log('yaaay', this.items);
   },
   methods: {
     ...mapActions([
-      "addCart",
-      "addBrandToFilter",
-      "addCategoryItem",
-      "ascendingOrderCart",
-      "descendingOrderCart",
-      "removeQty",
-      "addQty",
-      "fetchProductsFromApi",
+      'addCart',
+      'addBrandToFilter',
+      'addCategoryItem',
+      'ascendingOrderCart',
+      'descendingOrderCart',
+      'removeQty',
+      'addQty',
+      'fetchProductsFromApi',
     ]),
-    setRating: function(rating) {
+    setRating: function (rating) {
       this.rating = rating;
-      console.log("rating", (this.rating = rating));
+      console.log('rating', (this.rating = rating));
     },
     addCartPage(item) {
       this.addCart(item);
       this.$bvToast.toast(`${item.qty} item added to the cart successfully`, {
-        title: "Click View Cart",
-        variant: "primary",
+        title: 'Click View Cart',
+        variant: 'primary',
         solid: true,
         autoHideDelay: 700,
       });
@@ -269,7 +269,7 @@ export default {
       // this.$router.push("/app/apps/checkout");
     },
     viewProduct() {
-      this.$router.push("product-detail");
+      this.$router.push('product-detail');
       console.log(
         this.getFilterProducts.filter((item) =>
           item.title.toLowerCase().match(this.search.toLowerCase())
@@ -303,16 +303,16 @@ export default {
     },
 
     redirectCheckout() {
-      this.$router.push("/app/apps/checkout");
+      this.$router.push('/app/apps/checkout');
     },
     onRadioButtonChange(data) {
-      if (data == "asc") {
-        console.log("Working", this.ascendingOrderCart());
+      if (data == 'asc') {
+        console.log('Working', this.ascendingOrderCart());
       }
     },
 
     viewCart() {
-      this.$router.push("./product-detail");
+      this.$router.push('./product-detail');
     },
     // button
     listView() {
@@ -338,7 +338,8 @@ export default {
     this.paginate(this.perPage, 0);
     this.items = this.getItems;
     this.fetchProductsFromApi();
-    // console.log("getItems getter", this.getItems)
+    //   "Bearer " + JSON.parse(localStorage.getItem("userInfo")).uid;
+    console.log('Bearer ' + JSON.parse(localStorage.getItem('userInfo')).uid);
   },
 };
 </script>
